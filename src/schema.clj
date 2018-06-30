@@ -11,7 +11,7 @@
 ;; Batching Library
 
 (defn init-batcher [{:keys [batches] :as ctx} batch resolve-fn opts]
-  (let [opts' (merge opts {:interval 1 :capacity 1000})]
+  (let [opts' (merge {:interval 1 :capacity 1000} opts)]
     (or (get @batches batch)
         (let [batcher (apply grouper/start!
                              (fn [items]
@@ -22,7 +22,7 @@
           batcher))))
 
 
-(defn with-batching [resolve-fn & {:keys [opts]}]
+(defn with-batching [resolve-fn & {:keys [interval max-capacity] :as opts}]
   (fn [{:keys [batches ::graphql/selection] :as ctx} args value]
     (if-let [batch (:batch (:field-definition selection))]
       (let [batcher (init-batcher ctx batch resolve-fn opts)
@@ -40,21 +40,20 @@
    (let [ctx' (merge {:batches (atom {})} ctx)
          result (graphql/execute schema query args ctx' options)]
      ; Cleanup groupers
-     (d/future (reduce-kv (fn [acc k v] (grouper/shutdown! v) acc)
-                          {} @(:batches ctx)))
+     ;; (d/future (reduce-kv (fn [acc k v] (grouper/shutdown! v) acc)
+     ;;                      {} @(:batches ctx)))
      result)))
 
 ;; GraphQL Implementation
 
 (defn people [ctx items]
-  (Thread/sleep 10)
-  (map (fn [_] (repeatedly 20 #(hash-map :id (rand-int 1000)))) items))
+  (Thread/sleep 15)
+  (map (fn [_] (repeatedly 30 #(hash-map :id (rand-int 1000)))) items))
 
 
 (defn friends [ctx items]
   (Thread/sleep 5)
   (map (fn [_] (repeatedly 10 #(hash-map :id (rand-int 1000)))) items))
-
 
 (def schema
   {:objects
@@ -96,5 +95,11 @@
   }
   ")
 
+
+(defn timed-execute [& [show?]]
+  (let [result (time (batch-execute compiled query-str nil {}))]
+    (when show? result)))
+
+
 #_
-(time (batch-execute compiled query-str nil {}))
+(timed-execute)
