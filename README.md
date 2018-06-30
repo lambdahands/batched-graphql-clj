@@ -3,7 +3,7 @@
 A small example of using async batches to resolve GraphQL fields in Clojure
 using [lacinia][lacinia] and [grouper][grouper].
 
-[lacina]: https://github.com/walmartlabs/lacinia
+[lacinia]: https://github.com/walmartlabs/lacinia
 [grouper]: https://github.com/junegunn/grouper
 
 ## Usage
