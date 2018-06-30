@@ -14,8 +14,10 @@ Run `lein repl` in the source directory.
 
 Once it's up, run:
 
-    (require 'schema)
-    (ns schema)
-    (timed-execute)
+```clj
+(require 'schema)
+(ns schema)
+(timed-execute)
+```
 
 This runs a simple example showing the implementation in `src/schema.clj`.
