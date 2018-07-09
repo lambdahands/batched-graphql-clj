@@ -79,16 +79,13 @@
 
 
 (defn build-batch-query [query kws values]
-  (-> query
-    (update :with into (build-values-table kws values))
-    (h/merge-from :_values)))
+  (update query :with into (build-values-table kws values)))
 
 
 (defn collect-results [values results]
   (let [step (fn [acc v] (update acc (:_index v) conj v))
         init (vec (repeat (count values) nil))]
     (reduce step init results)))
-
 
 ;; GraphQL Implementation
 
@@ -103,9 +100,9 @@
 
 (defn friends-query [ctx args values]
   (-> {:select [:people.* :_values._index]
-       :join [:friends [:= :friends.person_id :_values.id]
-              :people  [:= :people.id :friends.friend_id]]
-       :order-by [:_values._index]}
+       :from [:friends]
+       :join [:_values [:= :friends.person_id :_values.id]
+              :people  [:= :people.id :friends.friend_id]]}
     (build-batch-query [:id] values)))
 
 
