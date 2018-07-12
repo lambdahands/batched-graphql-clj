@@ -11,6 +11,11 @@
             [grouper.core :as grouper]))
 
 
+; SQL Connection
+
+(def db "postgresql://localhost:5432/graphql_batching")
+
+
 ;; Batching Library
 
 (defn build-resolver [ctx batch args resolve-fn opts]
@@ -87,8 +92,8 @@
         init (vec (repeat (count values) nil))]
     (reduce step init results)))
 
-;; GraphQL Implementation
 
+;; GraphQL Implementation
 
 (defn people [ctx args values]
   (->> {:select [:people.*]
@@ -154,11 +159,6 @@
   ")
 
 
-; SQL Connection
-
-(def db "postgresql://localhost:5432/graphql_batching")
-
-
 (defn execute-query []
   (batch-execute compiled query-str nil {:db db}))
 
@@ -167,6 +167,12 @@
   (let [result (time (execute-query))]
     (when show? result)))
 
+(defn reset-db []
+  (jdbc/execute! db [(str (slurp "resources/teardown.sql")
+                          (slurp "resources/init.sql"))]))
+
+#_
+(reset-db)
 
 #_
 (clojure.pprint/pprint (timed-execute true))
