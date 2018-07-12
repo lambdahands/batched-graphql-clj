@@ -6,18 +6,43 @@ using [lacinia][lacinia] and [grouper][grouper].
 [lacinia]: https://github.com/walmartlabs/lacinia
 [grouper]: https://github.com/junegunn/grouper
 
-## Usage
+## Setup
 
 Make sure Leiningen is installed. On MacOS, for example: `brew install leiningen`.
 
+Next, setup a running PostgreSQL instance:
+
+```
+brew install postgresql
+brew services start postgresql
+```
+
+Create the example database:
+
+```
+createdb graphql_batching
+```
+
+## Usage
+
+
 Run `lein repl` in the source directory.
 
-Once it's up, run:
+Once it's up, require and enter the schema namspace:
 
 ```clj
 (require 'schema)
 (ns schema)
-(timed-execute)
 ```
 
-This runs a simple example showing the implementation in `src/schema.clj`.
+Reset the database:
+
+```clj
+(reset-db)
+```
+
+Run a batched query:
+
+```clj
+(timed-execute)
+```
