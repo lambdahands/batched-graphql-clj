@@ -8,7 +8,7 @@ using [lacinia][lacinia] and [grouper][grouper].
 
 ## Setup
 
-Make sure Leiningen is installed. On MacOS, for example: `brew install leiningen`.
+Make sure Clojure is installed. On MacOS, for example: `brew install clojure`.
 
 Next, setup a running PostgreSQL instance:
 
@@ -25,24 +25,13 @@ createdb graphql_batching
 
 ## Usage
 
-
-Run `lein repl` in the source directory.
+Run `clj -A:dev:examples` in the source directory.
 
 Once it's up, require and enter the schema namspace:
 
 ```clj
-(require 'schema)
-(ns schema)
-```
-
-Reset the database:
-
-```clj
-(reset-db)
-```
-
-Run a batched query:
-
-```clj
-(timed-execute)
+(require '[postgres.core :as pg])
+; default-db can be replaced with a connection string/object
+(pg/reset-example pg/default-db)
+(pg/run-example pg/default-db)
 ```

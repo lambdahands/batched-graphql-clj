@@ -1,0 +1,14 @@
+{:paths   ["src"]
+ :deps    {com.walmartlabs/lacinia {:mvn/version "0.28.0"}
+           junegunn/grouper        {:mvn/version "0.1.1"}
+           org.clojure/clojure     {:mvn/version "1.9.0"}}
+ :aliases {:dev      {:extra-paths ["dev"]
+                      :main-opts ["-m" "repl"]
+                      :extra-deps
+                      {cider/cider-nrepl          {:mvn/version "0.17.0"}
+                       com.bhauman/rebel-readline {:mvn/version "0.1.2"}}}
+           :examples {:extra-paths ["examples"]
+                      :extra-deps
+                      {honeysql                  {:mvn/version "0.9.2"}
+                       org.clojure/java.jdbc     {:mvn/version "0.7.7"}
+                       org.postgresql/postgresql {:mvn/version "42.2.2"}}}}}
