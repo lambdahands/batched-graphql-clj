@@ -1,0 +1,9 @@
+{:map    {:comma?      false
+          :force-nl?   true
+          :sort?       false
+          :justify?    true
+          :hang?       true
+          :hang-adjust 1000
+          :indent      0
+          :lift-ns?    false}
+ :vector {:respect-nl? true}}
