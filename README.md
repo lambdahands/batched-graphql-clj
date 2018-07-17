@@ -25,6 +25,15 @@ createdb graphql_batching
 
 ## Usage
 
+### Command Line
+
+```
+$ export DATABASE_URL="<my-postgresql-database-string>"
+$ clj -A:examples -e "(require 'postgres.core)(postgres.core/-main)"
+```
+
+### REPL
+
 Run `clj -A:dev:examples` in the source directory.
 
 Once it's up, require and enter the schema namspace:
