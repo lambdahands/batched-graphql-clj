@@ -1,0 +1,21 @@
+version: '3'
+services:
+  main:
+    build: .
+    volumes:
+      - .:/volume
+    ports:
+      - "7888:7888"
+    environment:
+      DATABASE_URL: "postgres://admin:password@db/graphql_batching"
+      NREPL_BIND: "0.0.0.0"
+      NREPL_PORT: 7888
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: graphql_batching

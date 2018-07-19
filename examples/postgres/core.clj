@@ -33,7 +33,7 @@
 (defn with-env-db
   ([f] (with-env-db nil f))
   ([env-key f]
-   (let [conn-str (System/getenv (or env-key "DATABASE_URL" default-db))]
+   (let [conn-str (or (System/getenv (or env-key "DATABASE_URL")) default-db)]
      (f (uri/param conn-str "loggerLevel" "OFF")))))
 
 (defn try-reset
