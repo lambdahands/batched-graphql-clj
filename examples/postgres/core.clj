@@ -18,8 +18,7 @@
 
 (def query-str "{ people { id friends { id } } }")
 
-(defn execute-query
-  [query db]
+(defn execute-query [query db]
   (batcher/batch-execute compiled-schema query nil {:db db}))
 
 (def default-db "postgresql://localhost:5432/graphql_batching")
@@ -36,16 +35,14 @@
    (let [conn-str (or (System/getenv (or env-key "DATABASE_URL")) default-db)]
      (f (uri/param conn-str "loggerLevel" "OFF")))))
 
-(defn try-reset
-  []
+(defn try-reset []
   (try (with-env-db reset-example)
        (catch Exception e
          (println ">>> Could not reset database:")
          (println (.getMessage e))
          (System/exit 0))))
 
-(defn env-time-example
-  []
+(defn env-time-example []
   (let [result (with-env-db time-example)]
     (if (:errors result)
       (do (println "Completed with errors:")
@@ -53,8 +50,7 @@
           (System/exit 1))
       (println :ok))))
 
-(defn -main
-  []
+(defn -main []
   (try-reset)
   (println :cold-run--start)
   (env-time-example)

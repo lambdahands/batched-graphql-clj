@@ -1,8 +1,7 @@
 (ns postgres.util
   (:require [clojure.java.jdbc :as jdbc]))
 
-(defn reset-sql
-  []
+(defn reset-sql []
   (str (slurp "resources/examples/teardown.sql")
        (slurp "resources/examples/init.sql")))
 
